@@ -21,6 +21,6 @@
         }
     },
     "scripts": {
-        "test": "bin/phpunit"
+        "test": "phpunit test --colors=always"
     }
 }
