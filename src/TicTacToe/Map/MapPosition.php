@@ -9,6 +9,9 @@ class MapPosition {
 
     public function __construct(int $x, int $y)
     {
+        if ($x >= 3 || $x < 0 || $y >= 3 || $y < 0) {
+            throw new \InvalidArgumentException('Invalid map position');
+        }
         $this->x = $x;
         $this->y = $y;
     }
