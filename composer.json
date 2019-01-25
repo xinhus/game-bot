@@ -1,0 +1,26 @@
+{
+    "name": "rafaelcardoso/game-bot",
+    "authors": [
+        {
+            "name": "Rafael Cardoso",
+            "email": "xinhus@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "GameBot\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\GameBot\\": "test"
+        }
+    },
+    "scripts": {
+        "test": "bin/phpunit"
+    }
+}
