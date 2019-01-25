@@ -61,7 +61,6 @@ class DefaultMapTest extends TestCase {
                     ['', '', ''],
                 ],
                 'emptySpot' => [
-
                     new MapPosition(0,0), new MapPosition(0, 1), new MapPosition(0, 2),
                     new MapPosition(1,0), new MapPosition(1, 1), new MapPosition(1, 2),
                     new MapPosition(2,0), new MapPosition(2, 1), new MapPosition(2, 2),
@@ -73,7 +72,7 @@ class DefaultMapTest extends TestCase {
     /**
      * @dataProvider getMapsToTestEmptySpots
      * @param array $mapToTest
-     * @param array $expectedSpots
+     * @param MapPosition[] $expectedSpots
      */
     public function testEmptySpots(array $mapToTest, array $expectedSpots): void
     {
@@ -106,6 +105,7 @@ class DefaultMapTest extends TestCase {
     /**
      * @dataProvider getInvalidMapsToTest
      * @param array $mapToTest
+     * @param string $expected_message
      */
     public function testMapConsistency(array $mapToTest, string $expected_message): void
     {
