@@ -1,0 +1,18 @@
+FROM php:7.1-apache
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --allow-root
+
+COPY /docker/config/install-dependencies.sh /
+RUN chmod +x /install-dependencies.sh
+RUN /install-dependencies.sh
+
+COPY /docker/config/host.conf /etc/apache2/sites-enabled/000-default.conf
+COPY docker/entrypoint.sh /
+
+RUN chmod o+x /entrypoint.sh
+
+WORKDIR /app
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+ENTRYPOINT ["/entrypoint.sh"]
