@@ -18,8 +18,8 @@ class DefaultMapTest extends TestCase {
             [
                 'map' => [
                     ['X', 'O', 'X'],
+                    ['O', 'X', 'X'],
                     ['O', 'X', 'O'],
-                    ['X', 'O', 'X'],
                 ],
                 'emptySpot' => []
             ],
@@ -27,7 +27,7 @@ class DefaultMapTest extends TestCase {
                 'map' => [
                     ['X', 'O', 'X'],
                     ['O', 'X', 'O'],
-                    ['X', 'O', ''],
+                    ['O', 'X', ''],
                 ],
                 'emptySpot' => [new MapPosition(2, 2)]
             ],

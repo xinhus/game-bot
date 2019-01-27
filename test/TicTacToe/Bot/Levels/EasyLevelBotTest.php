@@ -17,7 +17,7 @@ class EasyLevelBotTest extends TestCase {
                 'map' => [
                     ['X', 'O', 'X'],
                     ['O', 'X', 'O'],
-                    ['X', 'O', ''],
+                    ['O', 'X', ''],
                 ],
                 'allowedMovement' => [new MapPosition(2, 2)]
             ],
