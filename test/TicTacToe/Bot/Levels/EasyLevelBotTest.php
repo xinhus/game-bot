@@ -67,8 +67,8 @@ class EasyLevelBotTest extends TestCase {
      */
     public function testGetNextMove(array $mapAsArray, array $allowedMovements) {
         $map = new DefaultMap($mapAsArray);
-        $bot = new EasyLevelBot($map);
-        $movement = $bot->getNextMovement();
+        $bot = new EasyLevelBot();
+        $movement = $bot->getNextMovement($map);
         self::assertIsAnAllowedMovement($allowedMovements, $movement);
     }
 

@@ -7,8 +7,6 @@ use GameBot\TicTacToe\Map\MapPosition;
 
 interface BotService {
 
-    public function __construct(DefaultMap $map);
-
-    public function getNextMovement(): MapPosition;
+    public function getNextMovement(DefaultMap $map): MapPosition;
 
 }
