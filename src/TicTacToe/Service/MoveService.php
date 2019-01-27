@@ -11,7 +11,7 @@ class MoveService implements MoveInterface
 
     protected $bot;
 
-    public function __construct(BotService $bot)
+    private function __construct(BotService $bot)
     {
         $this->bot = $bot;
     }
