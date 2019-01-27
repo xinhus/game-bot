@@ -3,6 +3,7 @@
 namespace Test\GameBot\TicTacToe\Map;
 
 
+use GameBot\TicTacToe\Exceptions\NoMorePossibleMovementsException;
 use GameBot\TicTacToe\Map\DefaultMap;
 use GameBot\TicTacToe\Map\MapPosition;
 use InvalidArgumentException;
@@ -17,8 +18,8 @@ class DefaultMapTest extends TestCase {
             [
                 'map' => [
                     ['X', 'O', 'X'],
+                    ['O', 'X', 'X'],
                     ['O', 'X', 'O'],
-                    ['X', 'O', 'X'],
                 ],
                 'emptySpot' => []
             ],
@@ -26,7 +27,7 @@ class DefaultMapTest extends TestCase {
                 'map' => [
                     ['X', 'O', 'X'],
                     ['O', 'X', 'O'],
-                    ['X', 'O', ''],
+                    ['O', 'X', ''],
                 ],
                 'emptySpot' => [new MapPosition(2, 2)]
             ],
@@ -113,4 +114,78 @@ class DefaultMapTest extends TestCase {
         $this->expectExceptionMessage($expected_message);
         $map = new DefaultMap($mapToTest);
     }
+
+    public function getCasesIsOver(): array
+    {
+        return [
+            [
+                'map' => [
+                    ['X', 'X', 'X'],
+                    ['O', 'O', ''],
+                    ['', '', ''],
+                ]
+            ],
+            [
+                'map' => [
+                    ['O', 'O', ''],
+                    ['X', 'X', 'X'],
+                    ['', '', ''],
+                ]
+            ],
+            [
+                'map' => [
+                    ['', '', ''],
+                    ['O', 'O', ''],
+                    ['X', 'X', 'X'],
+                ]
+            ],
+            [
+                'map' => [
+                    ['X', 'O', ''],
+                    ['X', 'O', ''],
+                    ['X', '', ''],
+                ]
+            ],
+            [
+                'map' => [
+                    ['O', 'X', ''],
+                    ['O', 'X', ''],
+                    ['', 'X', ''],
+                ]
+            ],
+            [
+                'map' => [
+                    ['', 'O', 'X'],
+                    ['', 'O', 'X'],
+                    ['', '', 'X'],
+                ]
+            ],
+            [
+                'map' => [
+                    ['X', 'O', ''],
+                    ['', 'X', 'O'],
+                    ['', '', 'X'],
+                ]
+            ],
+            [
+                'map' => [
+                    ['', 'O', 'X'],
+                    ['', 'X', 'O'],
+                    ['X', '', ''],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getCasesIsOver
+     * @param array $mapToTest
+     */
+    public function testMapGameIsOver(array $mapToTest): void
+    {
+        $this->expectException(NoMorePossibleMovementsException::class);
+        $this->expectExceptionMessage('The player "X" already won the game.');
+        $map = new DefaultMap($mapToTest);
+    }
+
 }
