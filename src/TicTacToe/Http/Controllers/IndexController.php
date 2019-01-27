@@ -2,14 +2,18 @@
 
 namespace GameBot\TicTacToe\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller;
 
 class IndexController extends Controller
 {
 
-    public static function ticTacToeGame()
+    public static function ticTacToeGame(Request $request)
     {
-        return view('index');
+        $player = $request->get('player');
+        return view('tic-tac-toe', [
+            'player' => $player
+        ]);
     }
 
 }
