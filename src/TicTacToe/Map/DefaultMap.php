@@ -2,6 +2,8 @@
 
 namespace GameBot\TicTacToe\Map;
 
+use GameBot\TicTacToe\Exceptions\NoMorePossibleMovementsException;
+
 class DefaultMap {
 
     private $map;
@@ -9,6 +11,7 @@ class DefaultMap {
     public function __construct(array $map)
     {
         self::validateMapStructure($map);
+        self::validateWinner($map);
         $this->map = $map;
     }
 
@@ -26,6 +29,32 @@ class DefaultMap {
         if (sizeof($map) != 3) {
             throw new \InvalidArgumentException($message);
         }
+    }
+
+    private static function validateWinner(array $map)
+    {
+        if (
+            (!empty($map[0][0]) && $map[0][0] == $map[0][1] && $map[0][1] == $map[0][2]) || //first row
+            (!empty($map[0][0]) && $map[0][0] == $map[1][0] && $map[1][0] == $map[2][0]) || //first column
+            (!empty($map[0][0]) && $map[0][0] == $map[1][1] && $map[1][1] == $map[2][2]) //first diagonal
+        )
+            throw new NoMorePossibleMovementsException("The player \"{$map[0][0]}\" already won the game.");
+
+        if (!empty($map[1][0]) && $map[1][0] == $map[1][1] && $map[1][1] == $map[1][2]) //second column
+            throw new NoMorePossibleMovementsException("The player \"{$map[1][0]}\" already won the game.");
+
+        if (!empty($map[2][0]) && $map[2][0] == $map[2][1] && $map[2][1] == $map[2][2]) //third column
+            throw new NoMorePossibleMovementsException("The player \"{$map[2][0]}\" already won the game.");
+
+        if (!empty($map[0][1]) && $map[0][1] == $map[1][1] && $map[1][1] == $map[2][1]) //second row
+            throw new NoMorePossibleMovementsException("The player \"{$map[0][1]}\" already won the game.");
+
+        if (
+            (!empty($map[0][2]) && $map[0][2] == $map[1][2] && $map[1][2] == $map[2][2]) || //third row
+            (!empty($map[0][2]) && $map[0][2] == $map[1][1] && $map[1][1] == $map[2][0]) //second diagonal
+        )
+            throw new NoMorePossibleMovementsException("The player \"{$map[0][2]}\" already won the game.");
+
     }
 
     /**

@@ -98,6 +98,16 @@ JSON;
 	"playerUnit": "A"
 }
 JSON;
+        $mapWithWinneX = <<<JSON
+{
+	"map": [
+		["", "O", "X"],
+		["", "O", "X"],
+		["", "", "X"]
+	],
+	"playerUnit": "O"
+}
+JSON;
 
         return [
             ['json' => $mapWithTieResult, 'expectedMessage' => 'There is no more possible movements',],
@@ -105,6 +115,7 @@ JSON;
             ['json' => $invalidColumns, 'expectedMessage' => 'Invalid map structure, the map should have 3 columns',],
             ['json' => $invalidJson, 'expectedMessage' => 'Invalid json structure',],
             ['json' => $invalidPlayerUnit, 'expectedMessage' => 'Invalid json structure',],
+            ['json' => $mapWithWinneX, 'expectedMessage' => 'The player "X" already won the game.',],
         ];
     }
 
