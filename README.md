@@ -14,7 +14,7 @@ Then navigate to http://localhost/ in your browser.
 - Endpoint hard: `http://localhost/api/easy/nextMovement`
 
 DATA:
-```
+```json
 {
   "map":[
     ["","",""],
