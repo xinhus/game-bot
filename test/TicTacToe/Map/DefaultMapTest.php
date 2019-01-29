@@ -183,9 +183,77 @@ class DefaultMapTest extends TestCase {
      */
     public function testMapGameIsOver(array $mapToTest): void
     {
-        $this->expectException(NoMorePossibleMovementsException::class);
-        $this->expectExceptionMessage('The player "X" already won the game.');
         $map = new DefaultMap($mapToTest);
+        Assert::assertTrue($map->hasWinner());
+        Assert::assertEquals('X', $map->getWinnerPlayer());
+    }
+
+    public function getCasesToTestIsTie(): array
+    {
+        return [
+            [
+                'map' => [
+                    ['', '', ''],
+                    ['', '', ''],
+                    ['', '', ''],
+                ],
+                'expectedResult' => false
+            ],
+            [
+                'map' => [
+                    ['O', 'X', 'X'],
+                    ['O', 'X', 'O'],
+                    ['X', 'O', 'X'],
+                ],
+                'expectedResult' => false
+            ],
+            [
+                'map' => [
+                    ['O', 'X', 'O'],
+                    ['O', 'X', 'X'],
+                    ['X', 'O', 'X'],
+                ],
+                'expectedResult' => true
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getCasesToTestIsTie
+     * @param array $mapToTest
+     * @param bool $expectedResult
+     */
+    public function testIsTieResult(array $mapToTest, bool $expectedResult): void
+    {
+        $map = new DefaultMap($mapToTest);
+        Assert::assertEquals($expectedResult, $map->isTie());
+    }
+
+    public function testSimulateMovement(): void
+    {
+        $map = new DefaultMap([
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', ''],
+        ]);
+        $movement = new MapPosition(0, 1);
+        $simulatedMap = $map->simulateMapWithNextMove($movement, 'X');
+        self::assertPositionWasSimulated($movement, $simulatedMap);
+        Assert::assertEquals(9, sizeof($map->getEmptySpots()));
+        Assert::assertEquals(8, sizeof($simulatedMap->getEmptySpots()));
+    }
+
+    private static function assertPositionWasSimulated(MapPosition $movement, DefaultMap $simulatedMap): void
+    {
+        $isEqualsPosition = false;
+        foreach ($simulatedMap->getEmptySpots() as $emptySpot) {
+            if ($emptySpot->getY() == $movement->getY()
+                && $emptySpot->getX() == $movement->getX()
+            ) {
+                $isEqualsPosition = true;
+            }
+        }
+        Assert::assertFalse($isEqualsPosition);
     }
 
 }

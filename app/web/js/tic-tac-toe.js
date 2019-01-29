@@ -1,7 +1,9 @@
 $(function() {
-    let player = "player-1";
-    let game = $('.tic-tac-toe');
-    game.addClass(player);
+    const game = $('.tic-tac-toe');
+    const level = $('#level').val();
+
+    const rand = Math.floor(Math.random() * 100);
+    let player = rand < 50 ? 'player-1' : 'player-2';
 
     const block1 = $('#block-1-1');
     const block2 = $('#block-2-1');
@@ -111,7 +113,7 @@ $(function() {
         ];
 
         $.ajax({
-            url: 'http://localhost/api/easy/nextMovement',
+            url: 'http://localhost/api/' + level + '/nextMovement',
             method: 'post',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -126,4 +128,8 @@ $(function() {
             }
         });
     });
+
+    if ($('#wait_player').length === 0) {
+        game.addClass(player).trigger('changeTurn');
+    }
 });

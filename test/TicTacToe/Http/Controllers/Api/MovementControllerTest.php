@@ -6,6 +6,7 @@ use GameBot\TicTacToe\Http\Controllers\Api\MovementController;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class MovementControllerTest extends TestCase
 {
@@ -32,9 +33,9 @@ class MovementControllerTest extends TestCase
 	"playerUnit": "O"
 }
 JSON;
-        $request = new Request([], [], [], [], [], [], $content);
+        $request = self::createRequest($content);
 
-        $response = $this->controller->easyMove($request);
+        $response = $this->controller->easyLevelMovement($request);
         $responseAsObject = json_decode($response->getContent());
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -98,7 +99,7 @@ JSON;
 	"playerUnit": "A"
 }
 JSON;
-        $mapWithWinneX = <<<JSON
+        $mapWithWinnerX = <<<JSON
 {
 	"map": [
 		["", "O", "X"],
@@ -108,14 +109,60 @@ JSON;
 	"playerUnit": "O"
 }
 JSON;
+        $mapWithWinnerO = <<<JSON
+{
+	"map": [
+		["", "X", "O"],
+		["", "X", "O"],
+		["", "", "O"]
+	],
+	"playerUnit": "X"
+}
+JSON;
+        $mapWithTieResult = <<<JSON
+{
+	"map": [
+		["X", "O", "X"],
+		["O", "O", "X"],
+		["X", "X", "O"]
+	],
+	"playerUnit": "O"
+}
+JSON;
 
         return [
-            ['json' => $mapWithTieResult, 'expectedMessage' => 'There is no more possible movements',],
-            ['json' => $invalidRows, 'expectedMessage' => 'Invalid map structure, the map should have 3 rows',],
-            ['json' => $invalidColumns, 'expectedMessage' => 'Invalid map structure, the map should have 3 columns',],
-            ['json' => $invalidJson, 'expectedMessage' => 'Invalid json structure',],
-            ['json' => $invalidPlayerUnit, 'expectedMessage' => 'Invalid json structure',],
-            ['json' => $mapWithWinneX, 'expectedMessage' => 'The player "X" already won the game.',],
+            [
+                'json' => $mapWithTieResult,
+                'expectedMessage' => 'There is no more possible movements',
+            ],
+            [
+                'json' => $invalidRows,
+                'expectedMessage' => 'Invalid map structure, the map should have 3 rows',
+            ],
+            [
+                'json' => $invalidColumns,
+                'expectedMessage' => 'Invalid map structure, the map should have 3 columns',
+            ],
+            [
+                'json' => $invalidJson,
+                'expectedMessage' => 'Invalid json structure',
+            ],
+            [
+                'json' => $invalidPlayerUnit,
+                'expectedMessage' => 'Invalid json structure',
+            ],
+            [
+                'json' => $mapWithWinnerX,
+                'expectedMessage' => 'The player "X" already won the game.',
+            ],
+            [
+                'json' => $mapWithWinnerO,
+                'expectedMessage' => 'The player "O" already won the game.',
+            ],
+            [
+                'json' => $mapWithTieResult,
+                'expectedMessage' => 'There is no more possible movements',
+            ],
         ];
     }
 
@@ -124,11 +171,38 @@ JSON;
      * @param string $content
      * @param string $expectedMessage
      */
-    public function testInvalidRequest_shouldReturnBadRequest(string $content, string $expectedMessage)
-    {
-        $request = new Request([], [], [], [], [], [], $content);
+    public function testInvalidRequestWithEasyLevel_shouldReturnBadRequest(
+        string $content,
+        string $expectedMessage
+    ): void {
+        $request = self::createRequest($content);
 
-        $response = $this->controller->easyMove($request);
+        $response = $this->controller->easyLevelMovement($request);
+        self::assertRequestIsAsExpected($expectedMessage, $response);
+    }
+
+    /**
+     * @dataProvider getCasesToTestInvalidRequest
+     * @param string $content
+     * @param string $expectedMessage
+     */
+    public function testInvalidRequestWithHardLevel_shouldReturnBadRequest(
+        string $content,
+        string $expectedMessage
+    ): void {
+        $request = self::createRequest($content);
+
+        $response = $this->controller->hardLevelMovement($request);
+        self::assertRequestIsAsExpected($expectedMessage, $response);
+    }
+
+    private static function createRequest(string $content): Request
+    {
+        return $request = new Request([], [], [], [], [], [], $content);
+    }
+
+    private static function assertRequestIsAsExpected(string $expectedMessage, Response $response): void
+    {
         $responseAsObject = json_decode($response->getContent());
 
         Assert::assertEquals(400, $response->getStatusCode());

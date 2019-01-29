@@ -4,6 +4,8 @@ namespace GameBot\TicTacToe\Service;
 
 use GameBot\TicTacToe\Bot\BotService;
 use GameBot\TicTacToe\Bot\Levels\EasyLevelBot;
+use GameBot\TicTacToe\Bot\Levels\HardLevelBot;
+use GameBot\TicTacToe\Exceptions\NoMorePossibleMovementsException;
 use GameBot\TicTacToe\Map\DefaultMap;
 
 class MoveService implements MoveInterface
@@ -21,6 +23,9 @@ class MoveService implements MoveInterface
         if ($level == 'easy') {
             return new static(new EasyLevelBot());
         }
+        if ($level == 'hard') {
+            return new static(new HardLevelBot());
+        }
 
         throw new \InvalidArgumentException('Bot not found! Level: ' . $level);
     }
@@ -28,11 +33,16 @@ class MoveService implements MoveInterface
     public function makeMove($boardState, $playerUnit = 'X'): array
     {
         $map = new DefaultMap($boardState);
-        $movement = $this->bot->getNextMovement($map);
+        if ($map->hasWinner()) {
+            throw new NoMorePossibleMovementsException("The player \"{$map->getWinnerPlayer()}\" already won the game.");
+        }
+        $movement = $this->bot
+            ->setBotPlayerUnit($playerUnit)
+            ->getNextMovement($map);
         return [
             $movement->getX(),
             $movement->getY(),
-            $playerUnit
+            $this->bot->getBotPlayerUnit()
         ];
     }
 }
