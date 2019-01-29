@@ -22,9 +22,6 @@
             content: "<?=$playerOne?>" !important;
         }
 
-        .tic-tac-toe.player-2 .block:after {
-            content: "<?=$playerTwo?>";
-        }
         .tic-tac-toe .block.player-2:after {
             content: "<?=$playerTwo?>" !important;
         }
@@ -36,14 +33,17 @@
 
     <input type="hidden" value="<?= $player == 'X' ? 'X' : 'O'?>" id="player_one_char">
     <input type="hidden" value="<?= $player == 'X' ? 'O' : 'X'?>" id="player_two_char">
+    <input type="hidden" value="<?= $level ?>" id="level">
     <?php if (empty($player)): ?>
     <div class="start">
         <h3>Choose your player</h3>
-        <a href="?player=X" class="fa fa-times"></a>
-        <a href="?player=O" class="fa fa-circle-o"></a>
+        <a href="?player=X&level=<?= $level ?>" class="fa fa-times"></a>
+        <a href="?player=O&level=<?= $level ?>" class="fa fa-circle-o"></a>
     </div>
+    <input type="hidden" value="wait" id="wait_player">
     <?php endif; ?>
 
+    <div class="turn"></div>
     <div id="block-1-1" class="block"></div>
     <div id="block-2-1" class="block"></div>
     <div id="block-3-1" class="block"></div>
@@ -54,8 +54,13 @@
     <div id="block-2-3" class="block"></div>
     <div id="block-3-3" class="block"></div>
 
+    <div class="buttons">
+        <a class="<?= ($level=='easy')?  'selected' : '' ?>" href="?level=easy&player=<?= $player == 'X' ? 'X' : 'O'?>">Level: Easy</a>
+        <a class="<?= ($level=='hard')?  'selected' : '' ?>" href="?level=hard&player=<?= $player == 'X' ? 'X' : 'O'?>">Level: Hard</a>
+    </div>
+
     <div class="end">
-        <h3></h3><a href="?">Restart</a>
+        <h3></h3><a href="?level=<?= $level ?>">Restart</a>
     </div>
 </div>
 

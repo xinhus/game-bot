@@ -11,8 +11,10 @@ class IndexController extends Controller
     public static function ticTacToeGame(Request $request)
     {
         $player = $request->get('player');
+        $level = $request->get('level') == 'easy' ? 'easy' : 'hard';
         return view('tic-tac-toe', [
-            'player' => $player
+            'player' => $player,
+            'level' => $level,
         ]);
     }
 

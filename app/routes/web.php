@@ -4,4 +4,5 @@
 
 $router->get('/', 'IndexController@ticTacToeGame');
 
-$router->post('/api/easy/nextMovement', 'Api\MovementController@easyMove');
+$router->post('/api/easy/nextMovement', 'Api\MovementController@easyLevelMovement');
+$router->post('/api/hard/nextMovement', 'Api\MovementController@hardLevelMovement');

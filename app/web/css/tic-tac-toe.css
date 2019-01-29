@@ -15,12 +15,33 @@ h5 {
 	padding: 0 20px;
 }
 
+.turn{
+	background-color: #3d4250;
+	border-radius: 4px;
+	color: #fff;
+	padding: 10px 45px;
+	text-decoration: none;
+	-moz-transition: background-color 0.2s;
+	-o-transition: background-color 0.2s;
+	-webkit-transition: background-color 0.2s;
+	transition: background-color 0.2s;
+	height: 40px;
+	box-sizing: border-box;
+	margin: 5px;
+}
+.player-1 .turn:after{
+	content: 'Player turn!';
+}
+.player-2 .turn:after{
+	content: 'Computer turn, wait';
+}
+
 .tic-tac-toe {
 	font-family: 'Open Sans', sans-serif;
 	overflow: hidden;
 	margin: 50px auto 30px auto;
 	position: relative;
-	height: 450px;
+	height: 535px;
 	width: 450px;
 }
 
@@ -38,6 +59,7 @@ h5 {
 	text-align: center;
 	z-index: 11;
 	padding-top: 110px;
+	height: 550px;
 }
 
 .tic-tac-toe .start{
@@ -89,10 +111,10 @@ h5 {
 	transition: background-color 0.3s;
 	position: relative;
 }
-.tic-tac-toe .block:hover {
+.tic-tac-toe.player-1 .block:hover {
 	background-color: #3d4250;
 }
-.tic-tac-toe .block:hover:after {
+.tic-tac-toe.player-1 .block:hover:after {
 	opacity: .4;
 }
 .tic-tac-toe .block:after {
@@ -128,5 +150,32 @@ h5 {
 	content: "Player 1 wins!";
 }
 .tic-tac-toe.finished.winner-player-2 .end h3:before{
-	content: "Player 2 wins!";
+	content: "Computer wins!";
 }
+
+.buttons {
+	padding-top: 5px;
+	float: left;
+	width: 100%;
+}
+.buttons a{
+
+	background-color: #78bec5;
+	border-radius: 4px;
+	color: #fff;
+	padding: 5px 45px;
+	text-decoration: none;
+	-moz-transition: background-color 0.2s;
+	-o-transition: background-color 0.2s;
+	-webkit-transition: background-color 0.2s;
+	transition: background-color 0.2s;
+	box-sizing: border-box;
+	margin: 5px;
+}
+.buttons a.selected{
+	background-color: #dc685a;
+}
+.buttons a:hover{
+	background-color: #3d4250;
+}
+

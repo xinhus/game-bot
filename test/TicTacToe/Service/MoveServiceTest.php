@@ -3,6 +3,7 @@
 namespace Test\GameBot\TicTacToe\Service;
 
 use GameBot\TicTacToe\Bot\Levels\EasyLevelBot;
+use GameBot\TicTacToe\Bot\Levels\HardLevelBot;
 use GameBot\TicTacToe\Service\MoveInterface;
 use GameBot\TicTacToe\Service\MoveService;
 use PHPUnit\Framework\Assert;
@@ -19,13 +20,24 @@ class MoveServiceTest extends TestCase
         MoveService::getMoveService($level);
     }
 
-    public function testLoadEasyLevelBot()
+    public function getLevelsToTest() {
+        return [
+            ['level' => 'easy', 'bot' => EasyLevelBot::class],
+            ['level' => 'hard', 'bot' => HardLevelBot::class],
+        ];
+    }
+
+    /**
+     * @dataProvider getLevelsToTest
+     * @param string $level
+     * @param string $expectedBot
+     */
+    public function testLoadLevelBot(string $level, string $expectedBot)
     {
-        $level = 'easy';
         /** @var MoveServiceForTest $service */
         $service = MoveServiceForTest::getMoveService($level);
         Assert::assertInstanceOf(MoveInterface::class, $service);
-        Assert::assertInstanceOf(EasyLevelBot::class, $service->getBot());
+        Assert::assertInstanceOf($expectedBot, $service->getBot());
     }
 
     public function testMakeMOve()
